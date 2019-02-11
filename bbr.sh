@@ -16,10 +16,13 @@ plain='\033[0m'
 
 cur_dir=$(pwd)
 
+#判断是否是root用户
 [[ $EUID -ne 0 ]] && echo -e "${red}Error:${plain} This script must be run as root!" && exit 1
 
+#判断虚拟化是否基于KVM
 [[ -d "/proc/vz" ]] && echo -e "${red}Error:${plain} Your VPS is based on OpenVZ, which is not supported." && exit 1
 
+#判断linux系统分支
 if [ -f /etc/redhat-release ]; then
     release="centos"
 elif cat /etc/issue | grep -Eqi "debian"; then
@@ -38,6 +41,8 @@ else
     release=""
 fi
 
+
+#不知道啥作用
 is_digit(){
     local input=${1}
     if [[ "$input" =~ ^[0-9]+$ ]]; then
@@ -47,6 +52,7 @@ is_digit(){
     fi
 }
 
+#判断系统位数
 is_64bit(){
     if [ $(getconf WORD_BIT) = '32' ] && [ $(getconf LONG_BIT) = '64' ]; then
         return 0
@@ -55,17 +61,20 @@ is_64bit(){
     fi
 }
 
+#不知道啥作用
 get_valid_valname(){
     local val=${1}
     local new_val=$(eval echo $val | sed 's/[-.]/_/g')
     echo ${new_val}
 }
 
+#不知道啥作用
 get_hint(){
     local val=${1}
     local new_val=$(get_valid_valname $val)
     eval echo "\$hint_${new_val}"
 }
+
 
 #Display Memu
 display_menu(){
