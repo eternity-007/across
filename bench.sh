@@ -31,6 +31,9 @@ next() {
     printf "%-70s\n" "-" | sed 's/\s/-/g'
 }
 
+
+## -T:将所有超时设为 SECONDS 秒
+## 2>&1 的意思就是将标准错误重定向到标准输出
 speed_test_v4() {
     local output=$(LANG=C wget -4O /dev/null -T300 $1 2>&1)
     local speedtest=$(printf '%s' "$output" | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}')
